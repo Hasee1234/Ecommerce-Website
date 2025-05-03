@@ -66,6 +66,7 @@ const productSlice=createSlice({
     name:"product",
     initialState:{//initial state is the state that is at start like in a counter it is zero
         products:[],
+        search:"",
     },
     reducers:{//this reducer is function that will handle function of that particular slice
         deleteProduct:(state,action)=>{//state is current value like initial value that is not changed still then you will perfform action on it and you have passed it in parameter of function in app.jsx or any other comp
@@ -104,6 +105,11 @@ const productSlice=createSlice({
             // action will give the data from component here 
             state.products=action.payload
         },
+        setSearch:(state,action)=>{
+            // state will give the state of that particular slice
+            // action will give the data from component here 
+            state.search=action.payload
+        }
     },
     extraReducers:builder=>{
         //add extra reducer here,have to make 
@@ -140,5 +146,5 @@ const productSlice=createSlice({
       
 })
 
-export const {setProducts,deleteProduct,updateProduct,addProduct} = productSlice.actions//here we are exporting the actions(which are said events by events) of this slice that is setproducts like in a counter app we will export the increment and decrement and write them in that curly bracket
+export const {setProducts,deleteProduct,updateProduct,addProduct,setSearch} = productSlice.actions//here we are exporting the actions(which are said events by events) of this slice that is setproducts like in a counter app we will export the increment and decrement and write them in that curly bracket
 export default productSlice.reducer//here we are exporting the reducer this is not that parameter reducers

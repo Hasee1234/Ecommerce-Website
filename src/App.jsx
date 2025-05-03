@@ -1,10 +1,14 @@
 import React from 'react'
 import Routing from './routing/Routing'
-// import "./App.css"
-
+import Navbar from './components/Navbar/Navbar'
+import "./App.css"
+import banner2 from "./assets/banner2.jpg"
 const App = () => {
   return (
-    <div>
+
+   <div>
+      <Navbar/>
+
       <Routing/>
     </div>
   )

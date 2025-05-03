@@ -1,70 +1,61 @@
-import React,{useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteProduct, deleteProductApiAction, fetchProducts, updateProduct } from '../../store/slices/productSlice'
-import { useNavigate } from 'react-router-dom'
-
-
-
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteProduct, deleteProductApiAction, fetchProducts } from '../../store/slices/productSlice';
+import { useNavigate } from 'react-router-dom';
 
 const ProductList = () => {
-  const navigate=useNavigate()
-    useEffect(() => {
-        if(products.length === 0)
-      dispatch(fetchProducts())
-    }, [])
-    
-  const products = useSelector((state) => state.product.products); //product is the slice name that we write in store for importing it in store and
-  //products is the initial state where we written as products are emptty[]
-  // Access products correctly
-  // const products=useSelector(store=>store.productslice.products)
-  console.log("products in component",products)
-  const dispatch= useDispatch();
-  //it gets the actions from productSllice and then we use dispatch() in functions and pass that specific function in paramter of dispatch call
-  const onClickDeleteProduct=(id)=>{//we first make the action in slice of delete then dispatch here
-    console.log("delete product id",id)
-    dispatch(deleteProduct(id))
-  }
-  const onClickDeleteProductApi=(id)=>{//this delete will delete product from API
-    console.log("delete product id",id)
-    dispatch(deleteProductApiAction(id))
-  }
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.product.products);
+  const search = useSelector((state) => state.product.search); // 👈 use search from redux state
 
-  const onClickUpdateProduct=(id)=>{
-    console.log("update product id",id);
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
 
-    // dispatch(updateProduct(id))
-    navigate(`/products/${id}`)//this will navigate to the products page and then we will get the id in that page and then we will use it to get the data from API and then we will update it
-  }
+  const filteredProducts = products.filter(product =>
+    product.title.toLowerCase().includes(search.toLowerCase())
+  ); // 👈 filter based on search
 
-  const onClickGetProducts=()=>{
-    dispatch(fetchProducts())
-  }
+  const onClickDeleteProduct = (id) => {
+    dispatch(deleteProduct(id));
+  };
+
+  const onClickDeleteProductApi = (id) => {
+    dispatch(deleteProductApiAction(id));
+  };
+
+  const onClickUpdateProduct = (id) => {
+    navigate(`/products/${id}`);
+  };
+
   return (
-    <div>
-      {/* <button onClick={onClickGetProducts}>Get products</button> */}
-      {products.map(product=>{
-        return (
-
-          <div key={product.id} style={{display:'flex',flexDirection:'row'}}>
-            <div>
-          <img style={{width:100,padding:10}} src={product.image} alt="image" />
+    <div className='bg-stone-600 text-stone-200 min-h-screen p-5'>
+      <div className='container mx-auto'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+          {filteredProducts.map(product => (
+            <div key={product.id} className='bg-stone-700 rounded-lg overflow-hidden shadow-lg flex flex-col h-full transition-transform hover:scale-[1.02]'>
+              <div className='p-4 flex justify-center bg-white'>
+                <img className='object-contain h-48 w-full' src={product.image} alt={product.title} loading='lazy' />
+              </div>
+              <div className='p-4 flex-grow'>
+                <h2 className='text-xl font-bold text-stone-100 mb-2 line-clamp-2'>{product.title}</h2>
+                <p className='text-stone-300 mb-3 line-clamp-3'>{product.description}</p>
+                <p className='text-amber-400 font-bold text-lg'>${product.price}</p>
+              </div>
+              <div className='p-4 bg-stone-800 flex flex-wrap gap-2'>
+                <button onClick={() => onClickDeleteProduct(product.id)} className='bg-stone-500 hover:bg-stone-600 text-white py-2 px-4 rounded-md transition-colors flex-grow min-w-[100px]'>Delete</button>
+                <button onClick={() => onClickDeleteProductApi(product.id)} className='bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md transition-colors flex-grow min-w-[100px]'>Delete API</button>
+                <button onClick={() => onClickUpdateProduct(product.id)} className='bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors flex-grow min-w-[100px]'>Update</button>
+              </div>
             </div>
-            <div>
-          <h2>{product.title}</h2>
-          <p>{product.description}</p>
-          <p>{product.price}</p>
-          <button style={{backgroundColor:'gray',margin:5}} onClick={()=>onClickDeleteProduct(product.id)}>Delete</button>
-          <button style={{backgroundColor:'gray',margin:5}} onClick={()=>onClickDeleteProductApi(product.id)}>Delete from API</button>
-          <button style={{backgroundColor:'gray'}} onClick={()=>onClickUpdateProduct(product.id)}>Update</button>
-          <hr />
-          
-            </div>
+          ))}
         </div>
-        )
-      })}
-
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductList
+export default ProductList;

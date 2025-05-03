@@ -9,10 +9,6 @@ const Products = () => {
   const product=useSelector((state)=>state.product.products.find((p)=>p.id===parseInt(id)))
   return (
     <div>
-        <button style={{backgroundColor:'lightgreen'}}>
-        <Link to="/">Home</Link>;
-        </button>
-     
       <Addproduct existingProduct={product}/>
       {/* {!id && <ProductList/>} */}
       
