@@ -47,8 +47,8 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden mt-4 pb-4 space-y-3">
-          <a className="block py-2 px-4 hover:bg-stone-600 rounded-md">Home</a>
-          <a  className="block py-2 px-4 hover:bg-stone-600 rounded-md">Products</a>
+          <Link to="/"><a className="block py-2 px-4 hover:bg-stone-600 rounded-md">Home</a></Link>
+          <Link to="/products"><a  className="block py-2 px-4 hover:bg-stone-600 rounded-md">Products</a></Link>
           <input type="text" onChange={handleSearch} className='bg-white text-stone-600 block py-1.5 focus:shadow-lg focus:shadow-gray-900 px-4 rounded-md' placeholder='search item'/>          
           <Link to="/products"><a href="#add-product" className="block w-full text-center bg-amber-500 hover:bg-amber-600 text-stone-900 font-medium py-2 px-4 rounded-md"> Add Product</a></Link>
 
